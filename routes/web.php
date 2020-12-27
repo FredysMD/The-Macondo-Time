@@ -30,6 +30,7 @@ Route::get('/contact', function () {
 Auth::routes();
 
 Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::get('/home/{id}', [App\Http\Controllers\HomeController::class, 'show']);
 Route::get('/admin', [App\Http\Controllers\AdminController::class, 'index'])->name('admin');
 
 Route::resource('posts','App\Http\Controllers\PostsController'); // Es diferente por la versión de Laravel

@@ -24,8 +24,17 @@ class HomeController extends Controller
      */
     public function index()
     {   
-        $posts = Post::all();
+        $numPost = 3;
+        $posts = Post::orderBy('created_at','desc')->simplePaginate($numPost);
 
         return view('welcome',['posts' => $posts]);
+    }
+
+    public function show($id)
+    {
+        $postid = Post::find($id);
+
+        return view('/show', ['post' => $postid]);
+
     }
 }

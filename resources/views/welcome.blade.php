@@ -1,7 +1,7 @@
 
-  @extends('layouts.app')
+@extends('layouts.app')
 
-  @section('content')
+@section('content')
 
   <!-- Page Header -->
   <header class="masthead" style="background-image: url('/img/home-bg.jpg')">
@@ -28,29 +28,25 @@
         </div>
         <div class="col-lg-8 col-md-10 mx-auto">
           <div class="post-preview">
-            <a href="post.html">
+            <a href="/home/{{ $post->id }}">
               <h2 class="post-title">
                 {{ $post->title }}
               </h2>
               <h3 class="post-subtitle">
-                {!! $post->content !!}
+                {!! getShorterString($post->content,30) !!}
               </h3>
             </a>
             <p class="post-meta">Posted by
-              <a href="#">{{ $post->user['name'] }}</a>
-              on {{ $post->created_at }}</p>
-          </div> 
-        </div>
+              <a href="/home/{{ $post->id }}">{{ $post->user['name'] }}</a>
+              on {{ $post->created_at->diffForHumans() }}</p>
+          </div>  
+        </div> 
         <hr>
       @endforeach
     </div>
-    <!-- Pager -->
-    <div class="clearfix">
-      <a class="btn btn-primary float-right" href="#">Older Posts &rarr;</a>
-    </div>
-    
+    <hr>
+    {{ $posts->links() }}  
   </div>
-
   <hr>
 
-  @endsection
+@endsection

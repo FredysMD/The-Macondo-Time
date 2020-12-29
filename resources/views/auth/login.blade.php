@@ -8,6 +8,7 @@
                 <div class="card-header">{{ __('Macondo') }}</div>
 
                 <div class="card-body">
+                    <a href="/register">Not account</a>
                     <form method="POST" action="{{ route('login') }}">
                         @csrf
 

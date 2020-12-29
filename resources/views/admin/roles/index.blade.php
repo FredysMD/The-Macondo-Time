@@ -4,16 +4,16 @@
 
     <div class="row py-lg-2">
         <div class="col-md-6">
-            <h2>Posts</h2>
+            <h2>Roles</h2>
         </div>
         <div class="col-md-6">
-            <a href="/posts/create" class="btn btn-primary btn-lg float-md-right" type="button">Create Post</a>
+            <a href="/roles/create" class="btn btn-primary btn-lg float-md-right" type="button">Create Role</a>
         </div>
     </div>
     <div class="card mb-4">
         <div class="card-header">
             <i class="fas fa-table mr-1"></i>
-            Posts created
+            Roles created
         </div>
         <div class="card-body">
             <div class="table-responsive">
@@ -21,40 +21,32 @@
                     <thead>
                         <tr>
                             <th>Id</th>
-                            <th>Title</th>
-                            <th>Content</th>
-                            <th>Image</th>
-                            <th>Creator</th>
+                            <th>Name</th>
+                            <th>Slug</th>
+                            <th>Permissions</th>
                             <th>Tools</th>
                         </tr>
                     </thead>
                     <tfoot>
                         <tr>
                             <th>Id</th>
-                            <th>Title</th>
-                            <th>Content</th>
-                            <th>Image</th>
-                            <th>Creator</th>
+                            <th>Name</th>
+                            <th>Slug</th>
+                            <th>Permissions</th>
                             <th>Tools</th>
                         </tr>
                     </tfoot>
                     <tbody>
-                        @foreach ($posts as $post)
+                        @foreach ($roles as $role)
                         <tr>
-                            <td>{{$post->id}}</td>
-                            <td>{{$post->title}}</td>
-                            <td>{!! getShorterString($post->content,20) !!}</td>
-                            <td><img src="{{ asset('/storage/images/posts_images/'.$post->image_url) }}" alt="{{ $post->image_url}}" width="100"></td>
-                            @if(isset($post->user->name))
-                                <td>{{$post->user->name}}</td>
-                            @else
-                            <td>The Macondo Time</td>
-                            @endif
-                            
+                            <td>{{$role->id}}</td>
+                            <td>{{$role->name}}</td>
+                            <td>{{$role->slug}}</td>
+                            <td>permissions</td>
                             <td>
-                                <a href="/user/{{$post->id}}"><i class="fa fa-eye"></i></a>
-                                <a href="/posts/{{$post->id}}/edit"><i class="fa fa-edit"></i></a>
-                                <a href="#" data-toggle="modal" data-target="#deleteModal" data-postid = "{{ $post->id }}"><i class="fa fa-trash-alt"></i></a>
+                                <a href="/role/{{$role->id}}"><i class="fa fa-eye"></i></a>
+                                <a href="/roles/{{$role->id}}/edit"><i class="fa fa-edit"></i></a>
+                                <a href="#" data-toggle="modal" data-target="#deleteModal" data-roleid = "{{ $role->id }}"><i class="fa fa-trash-alt"></i></a>
                             </td>
                         </tr>    
                         @endforeach
@@ -67,32 +59,32 @@
     <div class="modal fade" id="deleteModal"  tabindex="-1" role="dialog">
         <div class="modal-dialog" role="document">
         <div class="modal-content">
-    
+
             <!-- Modal Header -->
             <div class="modal-header">
-            <h4 class="modal-title">Delete post</h4>
+            <h4 class="modal-title">Delete role</h4>
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
             </div>
-    
+
             <!-- Modal body -->
             <div class="modal-body">
-                Select "Delete" if you really want to delete this post.
+                Select "Delete" if you really want to delete this role.
             </div>
-    
+
             <!-- Modal footer -->
             <div class="modal-footer">
                 <button type="button" class="btn btn-success" data-dismiss="modal">Cancel</button>
-                <form method="POST" action="/posts/">
+                <form method="POST" action="/roles/">
                     @method('DELETE')
                     @csrf
-                    <input type="hidden" id="postId" name="postId" value="">
+                    <input type="hidden" id="roleId" name="roleId" value="">
                     <a  class="btn btn-danger" onclick="$(this).closest('form').submit();">Delete</a>
                 </form>
             </div>
         </div>
         </div>
     </div>
-
+        
 @endsection
 
 @section('js_post_page')
@@ -102,11 +94,11 @@
             // Button that triggered the modal
             var button = $(event.relatedTarget)
             // Extract info from data-bs-* attributes
-            var recipient = button.data('postid');
+            var recipient = button.data('roleid');
           
             var modal = $(this)
-            modal.find('.modal-footer #postId').val(recipient);
-            modal.find('form').attr('action','/posts/' + recipient);
+            modal.find('.modal-footer #roleId').val(recipient);
+            modal.find('form').attr('action','/roles/' + recipient);
            
         });
     </script>

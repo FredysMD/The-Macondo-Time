@@ -124,7 +124,7 @@ class PostsController extends Controller
      * @param  \App\Models\Post  $post
      * @return \Illuminate\Http\Response
      */
-    public function show(Post $post)
+    public function show($id)
     {
         //
     }
@@ -161,14 +161,14 @@ class PostsController extends Controller
         
         $image = $this->upload('image');
 
-        $newPost = Post::findOrFail($post->id);
+        $updatePost = Post::findOrFail($post->id);
 
-        $newPost->title = request('title');
-        $newPost->content = request('post_content');
-        $newPost->image_url = $image;
-        $newPost->userId =  $user->id;
+        $updatePost->title = request('title');
+        $updatePost->content = request('post_content');
+        $updatePost->image_url = $image;
+        $updatePost->userId =  $user->id;
 
-        $newPost->save();
+        $updateUser->save();
 
         return redirect('posts');
     }

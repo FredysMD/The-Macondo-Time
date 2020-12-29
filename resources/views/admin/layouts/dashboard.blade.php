@@ -66,6 +66,11 @@
                                 <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
                                 <span>User</span> 
                             </a>
+                            <div class="sb-sidenav-menu-heading">Roles</div>
+                            <a class="nav-link" href="/roles">
+                                <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
+                                <span>Role</span> 
+                            </a>
                         </div>
                     </div>
                     <div class="sb-sidenav-footer">

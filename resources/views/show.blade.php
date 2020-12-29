@@ -9,7 +9,12 @@
         <div class="col-lg-8 col-md-10 mx-auto">
             <div class="page-heading">
             <h1>{{$post->title}}</h1>
-            <span class="subheading">By {{ $post->user->name }}</span>
+            @if(isset($post->user->name))
+                <span class="subheading">By {{ $post->user->name }}</span>
+            @else
+            <span class="subheading">By The Macondo Time</span>
+            @endif
+            
             </div>
         </div>
         </div>

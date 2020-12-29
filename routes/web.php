@@ -34,3 +34,9 @@ Route::get('/home/{id}', [App\Http\Controllers\HomeController::class, 'show']);
 Route::get('/admin', [App\Http\Controllers\AdminController::class, 'index'])->name('admin');
 
 Route::resource('posts','App\Http\Controllers\PostsController'); // Es diferente por la versión de Laravel
+
+Route::resource('users','App\Http\Controllers\UsersController');
+Route::get('/user/{id}', [App\Http\Controllers\UsersController::class, 'show']);
+
+Route::resource('roles','App\Http\Controllers\RolesController');
+Route::get('/role/{id}', [App\Http\Controllers\RolesController::class, 'show']);

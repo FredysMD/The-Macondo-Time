@@ -168,7 +168,7 @@ class PostsController extends Controller
         $updatePost->image_url = $image;
         $updatePost->userId =  $user->id;
 
-        $updateUser->save();
+        $updatePost->save();
 
         return redirect('posts');
     }

@@ -42,7 +42,17 @@
                             <td>{{$role->id}}</td>
                             <td>{{$role->name}}</td>
                             <td>{{$role->slug}}</td>
-                            <td>permissions</td>
+                            <td>
+                                @if ($role->permissions != null)
+                                    
+                                    @foreach ($role->permissions as $permission)
+                                    <span class="badge badge-success">
+                                        {{ $permission->name }}                                    
+                                    </span>
+                                    @endforeach
+                            
+                                @endif
+                            </td>
                             <td>
                                 <a href="/role/{{$role->id}}"><i class="fa fa-eye"></i></a>
                                 <a href="/roles/{{$role->id}}/edit"><i class="fa fa-edit"></i></a>
@@ -74,11 +84,11 @@
             <!-- Modal footer -->
             <div class="modal-footer">
                 <button type="button" class="btn btn-success" data-dismiss="modal">Cancel</button>
-                <form method="POST" action="/roles/">
+                <form method="POST" action="">
                     @method('DELETE')
                     @csrf
-                    <input type="hidden" id="roleId" name="roleId" value="">
-                    <a  class="btn btn-danger" onclick="$(this).closest('form').submit();">Delete</a>
+                    {{-- <input type="hidden" id="role_id" name="role_id" value=""> --}}
+                    <a class="btn btn-danger" onclick="$(this).closest('form').submit();">Delete</a>
                 </form>
             </div>
         </div>
@@ -87,19 +97,16 @@
         
 @endsection
 
-@section('js_post_page')
+@section('js_role_page')
     <script>
         
         $('#deleteModal').on('show.bs.modal', function (event) {
-            // Button that triggered the modal
-            var button = $(event.relatedTarget)
-            // Extract info from data-bs-* attributes
-            var recipient = button.data('roleid');
-          
+            var button = $(event.relatedTarget) 
+            var role_id = button.data('roleid') 
+            
             var modal = $(this)
-            modal.find('.modal-footer #roleId').val(recipient);
-            modal.find('form').attr('action','/roles/' + recipient);
-           
-        });
+            // modal.find('.modal-footer #role_id').val(role_id)
+            modal.find('form').attr('action','/roles/' + role_id);
+         })
     </script>
 @endsection

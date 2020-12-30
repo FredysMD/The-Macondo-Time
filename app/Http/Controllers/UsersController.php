@@ -116,8 +116,7 @@ class UsersController extends Controller
      */
     public function update(Request $request, User $user)
     {
-        //
-        $this->validator($request);
+        //$this->validator($request);
 
 
         $updateUser = User::findOrFail($user->id);

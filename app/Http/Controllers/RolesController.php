@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Role;
+use App\Models\Permission;
 use Illuminate\Http\Request;
 
 class RolesController extends Controller
@@ -45,12 +46,33 @@ class RolesController extends Controller
         return view('admin.roles.create');
     }
 
+    public function addPermissionsRoles($request, $role)
+    {
+        $permissions = explode(',', $request->roles_permission);//
+
+
+        foreach($permissions as $permission){
+            
+            $newPermission = new Permission();
+            $newPermission->name = $permission;
+            $newPermission->slug = strtolower(str_replace(" ","-",$permission));
+            
+            $newPermission->save();
+            $role->permissions()->attach($newPermission->id);
+            $role->save();
+
+        }
+
+    }
+
+
     /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
+
     public function store(Request $request)
     {
         //
@@ -58,9 +80,10 @@ class RolesController extends Controller
 
         $newRole->name = request('name');
         $newRole->slug = request('slug');
-
         $newRole->save();
 
+        $this->addPermissionsRoles($request,$newRole);
+       
         return redirect('roles');
 
     }
@@ -105,12 +128,14 @@ class RolesController extends Controller
     {
         //
 
-        $updateRole = Role::findOrFail($role->id);
+        $role->name = request('name');
+        $role->slug = request('slug');
+        $role->save();
 
-        $updateRole->name = request('name');
-        $updateRole->slug = request('slug');
+        $role->permissions()->delete();
+        $role->permissions()->detach();
 
-        $updateRole->save();
+        $this->addPermissionsRoles($request,$role);
 
         return redirect('roles');
     }
@@ -121,14 +146,15 @@ class RolesController extends Controller
      * @param  \App\Models\Role  $role
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Request $request)
+    public function destroy(Role $role)
     {
-        //
-        $role = Role::find($request->roleId);
+        
 
+        $role->permissions()->delete();
         $role->delete();
+        $role->permissions()->detach();
 
-        return redirect('roles');
+        return redirect('/roles');
 
     }
 }

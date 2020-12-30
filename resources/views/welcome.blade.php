@@ -11,7 +11,7 @@
         <div class="col-lg-8 col-md-10 mx-auto">
           <div class="site-heading">
             <h1>Macondo</h1>
-            <span class="subheading">A Blog Theme by Start Bootstrap</span>
+            <span class="subheading">"La vida no es la que uno vivió, sino la que recuerda y cómo la recuerda para contarla"</span>
           </div>
         </div>
       </div>

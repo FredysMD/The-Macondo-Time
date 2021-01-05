@@ -35,8 +35,8 @@ Route::get('/admin', [App\Http\Controllers\AdminController::class, 'index'])->na
 
 Route::resource('posts','App\Http\Controllers\PostsController'); // Es diferente por la versión de Laravel
 
-Route::resource('users','App\Http\Controllers\UsersController');
-Route::get('/user/{id}', [App\Http\Controllers\UsersController::class, 'show']);
+Route::resource('users','App\Http\Controllers\UsersController')->middleware('role:admin,manager');
+Route::get('/user/{id}', [App\Http\Controllers\UsersController::class, 'show'])->middleware('role:admin,manager');
 
-Route::resource('roles','App\Http\Controllers\RolesController');
-Route::get('/role/{id}', [App\Http\Controllers\RolesController::class, 'show']);
+Route::resource('roles','App\Http\Controllers\RolesController')->middleware('can:isAdmin');
+Route::get('/role/{id}', [App\Http\Controllers\RolesController::class, 'show'])->middleware('can:isAdmin');

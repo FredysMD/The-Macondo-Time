@@ -9,7 +9,7 @@
              <!-- Background image for card set in CSS! -->
           
            <div class="text-center mx-auto mb-5">
-             <h1 class="font-weight-light">The Macondo Time</h1>
+             <h1 class="font-weight-light">The Macondo Times</h1>
             </div>
 
             <form method="POST" action="{{ route('register') }}">

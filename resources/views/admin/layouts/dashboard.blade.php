@@ -18,8 +18,9 @@
     </head>
     <body class="sb-nav-fixed">
         <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
-            <a class="navbar-brand" href="/admin">The Macondo Time</a>
+            <a class="navbar-brand" href="/admin">The Macondo Times</a>
             <button class="btn btn-link btn-sm order-1 order-lg-0" id="sidebarToggle" href="#"><i class="fas fa-bars"></i></button>
+            
             <!-- Navbar Search-->
             <form class="d-none d-md-inline-block form-inline ml-auto mr-0 mr-md-3 my-2 my-md-0">
                 <div class="input-group">
@@ -31,8 +32,15 @@
             </form>
             <!-- Navbar-->
             <ul class="navbar-nav ml-auto ml-md-0">
+                <li class="navbar-nav ml-auto ml-md-0 text-white">
+                    @auth
+                        {{ Auth::user()->name }} {{ Auth::user()->roles->isNotEmpty() ? Auth::user()->roles->first()->name : "" }}
+                    @endauth
+                </li>
                 <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" id="userDropdown" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-user fa-fw"></i></a>
+                    <a class="nav-link dropdown-toggle" id="userDropdown" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <i class="fas fa-user fa-fw"></i>
+                    </a>
                     <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
                         <a class="dropdown-item" href="#"
                         onclick="event.preventDefault();
@@ -54,7 +62,10 @@
                         <div class="nav">
                             <div class="sb-sidenav-menu-heading">Core</div>
                             <a class="nav-link" href="/">
-                                <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
+                                <div class="sb-nav-link-icon">
+                                    <i class="fas fa-tachometer-alt">
+                                    </i>
+                                </div>
                                 <span>Home</span>  
                             </a>
                             <div class="sb-sidenav-menu-heading">Posts</div>
@@ -62,21 +73,25 @@
                                 <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
                                 <span>Post</span> 
                             </a>
+                            @canany(['isAdmin','isManager'])  
                             <div class="sb-sidenav-menu-heading">Users</div>
                             <a class="nav-link" href="/users">
                                 <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
                                 <span>User</span> 
                             </a>
-                            <div class="sb-sidenav-menu-heading">Roles</div>
-                            <a class="nav-link" href="/roles">
-                                <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
-                                <span>Role</span> 
-                            </a>
+                            @endcanany
+                            @can('isAdmin')
+                                <div class="sb-sidenav-menu-heading">Roles</div>
+                                <a class="nav-link" href="/roles">
+                                    <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
+                                    <span>Role</span> 
+                                </a>
+                            @endcan
                         </div>
                     </div>
                     <div class="sb-sidenav-footer">
-                        <div class="small">Logged in as:</div>
-                        Start Bootstrap
+                        <div class="small">Aracataca</div>
+                        The Macondo times
                     </div>
                 </nav>
             </div>
@@ -89,7 +104,7 @@
             <footer class="py-4 bg-light mt-auto">
                 <div class="container-fluid">
                     <div class="d-flex align-items-center justify-content-between small">
-                        <div class="text-muted">Copyright &copy; Your Website 2020</div>
+                        <div class="text-muted">Copyright &copy; Your Website 2021</div>
                         <div>
                             <a href="#">Privacy Policy</a>
                             &middot;
@@ -111,6 +126,7 @@
         <script src="/js/admin/datatables-demo.js"></script>
         @yield('js_post_page')
         @yield('js_role_page')
+        @yield('js_user_page')
     </body>
 </html>
 

@@ -40,12 +40,41 @@
                 </tfoot>
                 <tbody>
                     @foreach ($users as $user)
-                    <tr>
+                    @if(!\Auth::user()->hasRole('admin') && $user->hasRole('admin')) @continue; @endif
+                    <tr {{ Auth::user()->id == $user->id ?  'bgcolor = #20c997' : '' }} >
                         <td>{{$user->id}}</td>
                         <td>{{$user->name}}</td>
                         <td>{{$user->email}}</td>
-                        <td>{{$user->email}}</td>
-                        <td>{{$user->email}}</td>
+                        <td> 
+                          @if (count($user->roles))
+                                    
+                            @foreach ($user->roles as $role)
+                                <span class="badge badge-success">
+                                    {{ $role->name }}                                    
+                                </span>
+                            @endforeach
+                          
+                          @else
+                            <span class="badge badge-danger">
+                                Not role exist                                     
+                            </span>
+                          @endif
+                        </td>
+                        <td> 
+                            @if(count($user->permissions))
+                                      
+                              @foreach ($user->permissions as $permission)
+                                <span class="badge badge-success">
+                                    {{ $permission->name }}                                    
+                                </span>
+                              @endforeach
+                            
+                            @else
+                                <span class="badge badge-danger">
+                                   Not permissions exist                                    
+                                </span>
+                            @endif
+                        </td>
                         <td>
                             <a href="/user/{{$user->id}}"><i class="fa fa-eye"></i></a>
                             <a href="/users/{{$user->id}}/edit"><i class="fa fa-edit"></i></a>

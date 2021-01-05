@@ -12,7 +12,7 @@
               <div class="col-md-9 col-lg-4 mx-auto">
                 
                 <div class="text-center mx-auto mb-2">
-                    <h1 class="font-weight-light">The Macondo Time</h1>
+                    <h1 class="font-weight-light">The Macondo Times</h1>
                 </div>
                 <form method="POST"  {{ route('login') }}>
                 @csrf

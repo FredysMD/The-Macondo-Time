@@ -46,9 +46,9 @@
                                 @if ($role->permissions != null)
                                     
                                     @foreach ($role->permissions as $permission)
-                                    <span class="badge badge-success">
-                                        {{ $permission->name }}                                    
-                                    </span>
+                                        <span class="badge badge-success">
+                                            {{ $permission->name }}                                    
+                                        </span>
                                     @endforeach
                             
                                 @endif

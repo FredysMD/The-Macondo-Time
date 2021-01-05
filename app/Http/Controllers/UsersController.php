@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Models\Role;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
@@ -49,10 +50,42 @@ class UsersController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Request $request)
     {
         //
-        return view('admin.users.create');
+        if($request->ajax()){
+            
+            $role = Role::where('id', $request->role_id)->first();
+
+            $permissions = $role->permissions;
+
+            return $permissions;
+
+        }
+
+        $roles = Role::all();
+
+        return view('admin.users.create',['roles' => $roles]);
+    }
+
+    public function storeUserAndRole($user, $request)
+    {
+        if($request->role != null){
+            $user->roles()->attach($request->role);
+            $user->save();
+        }
+        
+    }
+
+    public function storeUserAndPermission($user, $request)
+    {
+
+        if($request->permissions != null ){
+            foreach($request->permissions as $permission){
+                $user->permissions()->attach($request->permissions);
+                $user->save();
+            }
+        }
     }
 
     /**
@@ -64,16 +97,17 @@ class UsersController extends Controller
     public function store(Request $request)
     {
         //
-
         $this->validator($request);
 
         $newUser = new User();
 
         $newUser->name     = request('name');
         $newUser->email    = request('email');
-        $newUser->password = request('password');
-        
+        $newUser->password = Hash::make(request('password'));
         $newUser->save();
+
+        $this->storeUserAndRole($newUser, $request);
+        $this->storeUserAndPermission($newUser, $request);
 
         return redirect('users');
     }
@@ -103,8 +137,23 @@ class UsersController extends Controller
     {
         //
         $user = User::find($user->id);
+        $roles = Role::all();
+        $userRole = $user->roles->first();
 
-        return view('admin.users.edit', ['user' => $user]);
+        if($userRole != null){
+           $rolePermissions = $userRole->permissions;
+        }else{
+           $rolePermissions = null;
+        }   
+        $userPermissions = $user->permissions;
+
+        return view('admin.users.edit', [
+                    'user' => $user,
+                    'userRole' => $userRole,
+                    'roles' => $roles,
+                    'rolePermissions' => $rolePermissions,
+                    'userPermissions' => $userPermissions
+                   ]);
     }
 
     /**
@@ -124,11 +173,17 @@ class UsersController extends Controller
         $updateUser->name     = request('name');
         $updateUser->email    = request('email');
 
-        if(request('password')){
+        if(request('password') != null){
             $updateUser->password = Hash::make(request('password'));
         }
 
         $updateUser->save();
+
+        $updateUser->roles()->detach();
+        $updateUser->permissions()->detach();
+
+        $this->storeUserAndRole($updateUser, $request);
+        $this->storeUserAndPermission($updateUser, $request);
 
         return redirect('users');
     }
@@ -142,7 +197,6 @@ class UsersController extends Controller
     public function destroy(Request $request)
     {
         //
-
         $user = User::find($request->userId);
 
         $user->delete();

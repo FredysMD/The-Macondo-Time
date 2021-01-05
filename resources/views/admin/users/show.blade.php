@@ -10,13 +10,31 @@
             <h4>Number of Posts: dsd</h4>
         </div>
         <div class="card-body">
-            <h5 class="card-title">Role</h5>
+            <h5 class="card-title">Roles</h5>
             <p class="card-text">
-                ---
+
+                @if ($user->roles != null)
+                                    
+                    @foreach ($user->roles as $role)
+                        <span class="badge badge-primary">
+                            {{ $role->name }}                                    
+                        </span>
+                    @endforeach
+        
+                @endif
             </p>
-            <h5 class="card-title">Permission</h5>
+            <h5 class="card-title">Permissions</h5>
             <p class="card-text">
-                ----
+
+                @if($user->permissions != null)
+                            
+                    @foreach ($user->permissions as $permission)
+                        <span class="badge badge-success">
+                            {{ $permission->name }}                                    
+                        </span>
+                    @endforeach
+            
+                @endif
             </p>
         </div>        
         <div class="card-footer">

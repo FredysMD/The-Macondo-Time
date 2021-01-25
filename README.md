@@ -9,3 +9,7 @@ Es una plataforma creada con el fin de informar sobre los hechos que ocurren en 
 - composer require laravel/ui --dev (Instalar la dependecia ui)
 - php artisan ui vue --auth (Genera todo el sistema de login, registro y recuperación de contraseña)
 - php artisan make:controller UsersController -m User --resource (Generar controlador con métodos genéricos)
+
+
+## The Macondo times
+- http://themacondotimes.herokuapp.com/

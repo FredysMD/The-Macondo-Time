@@ -38,7 +38,7 @@
             </p>
         </div>        
         <div class="card-footer">
-            <a href="/users" class="btn btn-primary">Go Back</a>
+            <a href="{{ url()->previous() }}" class="btn btn-primary btn-lg float-md-right" role="button" aria-pressed="true">Go Back...</a>
         </div>
     </div>
 </div>

@@ -1,4 +1,3 @@
-
 @extends('layouts.app')
 
 @section('content')
@@ -21,7 +20,6 @@
   <!-- Main Content -->
   <div class="container">
     <div class="row">
-
         @if(count($posts))
           @foreach ($posts as $post)
             <div class="col-md-4">
@@ -56,7 +54,6 @@
         @endif
 
     </div>
-    <hr>
     {{ $posts->links() }}  
   </div>
   <hr>

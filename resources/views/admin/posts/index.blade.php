@@ -6,9 +6,11 @@
         <div class="col-md-6">
             <h2>Posts</h2>
         </div>
-        <div class="col-md-6">
-            <a href="/posts/create" class="btn btn-primary btn-lg float-md-right" type="button">Create Post</a>
-        </div>
+        @cannot('isManager')
+            <div class="col-md-6">
+                <a href="/posts/create" class="btn btn-primary btn-lg float-md-right" type="button">Create Post</a>
+            </div> 
+        @endcannot
     </div>
     <div class="card mb-4">
         <div class="card-header">
@@ -48,13 +50,20 @@
                             @if(isset($post->user->name))
                                 <td>{{$post->user->name}}</td>
                             @else
-                            <td>The Macondo Time</td>
+                            <td>The Macondo Times</td>
                             @endif
                             
                             <td>
-                                <a href="/user/{{$post->id}}"><i class="fa fa-eye"></i></a>
-                                <a href="/posts/{{$post->id}}/edit"><i class="fa fa-edit"></i></a>
-                                <a href="#" data-toggle="modal" data-target="#deleteModal" data-postid = "{{ $post->id }}"><i class="fa fa-trash-alt"></i></a>
+                                <a href="/posts/{{$post->id}}"><i class="fa fa-eye"></i></a>
+                                @cannot('isManager')
+                                    <a href="/posts/{{$post->id}}/edit"><i class="fa fa-edit"></i></a>
+                                    <a href="#" data-toggle="modal" data-target="#deleteModal" data-postid = "{{ $post->id }}"><i class="fa fa-trash-alt"></i></a>
+                                @endcannot
+                                @if($post->published)                                     
+                                    <span>
+                                        <i class="fa fa-check-square" style="color:green"></i>                                                                                      
+                                    </span>
+                                @endif     
                             </td>
                         </tr>    
                         @endforeach

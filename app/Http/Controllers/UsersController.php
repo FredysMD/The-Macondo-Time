@@ -31,7 +31,7 @@ class UsersController extends Controller
         //
         $users = User::all();
 
-        return view('admin.users.index',['users' => $users]);
+        return view('admin.users.index', ['users' => $users]);
     }
 
     /**
@@ -65,8 +65,16 @@ class UsersController extends Controller
 
         $roles = Role::all();
 
-        return view('admin.users.create',['roles' => $roles]);
+        return view('admin.users.create', ['roles' => $roles]);
     }
+
+    /**
+     * Undocumented function
+     *
+     * @param [type] $user
+     * @param [type] $request
+     * @return void
+     */
 
     public function storeUserAndRole($user, $request)
     {
@@ -77,6 +85,14 @@ class UsersController extends Controller
         
     }
 
+    /**
+     * Undocumented function
+     *
+     * @param [type] $user
+     * @param [type] $request
+     * @return void
+     */
+    
     public function storeUserAndPermission($user, $request)
     {
 

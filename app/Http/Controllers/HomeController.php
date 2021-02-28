@@ -7,16 +7,7 @@ use App\Models\Post;
 
 class HomeController extends Controller
 {
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        $this->middleware('auth');
-    }
-
+   
     /**
      * Show the application dashboard.
      *
@@ -25,11 +16,11 @@ class HomeController extends Controller
     public function index()
     {   
         $numPost = 3;
-        $posts = Post::orderBy('created_at','desc')->simplePaginate($numPost);
+        $isPublished = 1;
 
-
+        $posts = Post::where('published', $isPublished)->orderBy('created_at','desc')->simplePaginate($numPost);
+        
         return view('welcome',['posts' => $posts]);
-      
     }
 
     public function show($id)

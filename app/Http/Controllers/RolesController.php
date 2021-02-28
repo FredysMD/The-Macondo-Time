@@ -9,8 +9,6 @@ use Illuminate\Http\Request;
 class RolesController extends Controller
 {   
 
-
-
     /**
      * Create a new controller instance.
      *
@@ -32,7 +30,7 @@ class RolesController extends Controller
         //
         $roles = Role::all();
 
-        return view('admin.roles.index',['roles'=>$roles]);
+        return view('admin.roles.index', ['roles'=>$roles]);
     }
 
     /**
@@ -99,7 +97,7 @@ class RolesController extends Controller
         //
         $roleid  = Role::find($id);
 
-        return view('admin.roles.show',['role'=>$roleid]);
+        return view('admin.roles.show', ['role'=>$roleid]);
 
     }
 
@@ -114,7 +112,7 @@ class RolesController extends Controller
         //
         $role = Role::find($role->id);
 
-        return view('admin.roles.edit',['role'=>$role]);
+        return view('admin.roles.edit', ['role'=>$role]);
     }
 
     /**
@@ -127,7 +125,6 @@ class RolesController extends Controller
     public function update(Request $request, Role $role)
     {
         //
-
         $role->name = request('name');
         $role->slug = request('slug');
         $role->save();

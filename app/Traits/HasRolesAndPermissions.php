@@ -7,6 +7,16 @@ use App\Models\Permission;
 
 trait HasRolesAndPermissions{
 
+
+    public function isAdmin()
+    {
+        if($this->roles->contains('slug','admin')){
+            return true;
+        }
+
+        return false;
+    }
+
     public function roles()
     {
         return $this->belongsToMany(Role::class,'users_roles');

@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\Post;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Gate;
 use Auth;
 
 
@@ -29,7 +28,11 @@ class PostsController extends Controller
     public function index()
     {
         //
-        $posts = Post::all();
+        if(!\Auth::user()->hasRole('admin') && !\Auth::user()->hasRole('manager')){
+            $posts = Post::where('userId', \Auth::user()->id)->get();
+        }else{
+            $posts = Post::all();
+        }
 
         return view('admin.posts.index', ['posts' => $posts]);
     }
@@ -42,6 +45,8 @@ class PostsController extends Controller
     public function create()
     {
         //
+        $this->authorize('create', Post::class);
+        
         return view('admin.posts.create');  
     }
 
@@ -62,7 +67,7 @@ class PostsController extends Controller
 
         $newFileName = $fileName.'_'.time().'.'.$extension;
 
-        $path = request($image)->storeAs('public/images/posts_images/', $newFileName);
+        $path = request($image)->storeAs('public/storage/images/posts_images/', $newFileName);
 
         return $newFileName;
 
@@ -74,16 +79,17 @@ class PostsController extends Controller
      * @param  $options -> options for validate.
      * @return ->  nothing.
     */
-    public function validator($options)
+    public function validator()
     {
-        $data = request()->validate($options);
+        $data = request()->validate(['image' => 'required|image',
+        'post_content' => 'required']);
         
     }
 
     public function deleteImage($imagePost)
     {
         $image = public_path().'/storage/images/posts_images/'.$imagePost;
-
+        
         if(file_exists($image)){
             unlink($image);
         }
@@ -95,13 +101,11 @@ class PostsController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Post $post, Request $request)
     {
         
-        //
-        $options = ['image'=>'required|image'];
-
-        $this->validator($options);
+        $this->authorize('create', $post);
+        $this->validator();
 
         $user = auth()->user();
         
@@ -125,9 +129,19 @@ class PostsController extends Controller
      * @param  \App\Models\Post  $post
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
-    {
-        //
+    public function show(Request $request, Post $post)
+    {   
+
+        if (\Request::ajax()){
+
+            $post = Post::find($request['task']['id']);
+            $post->published = $request['task']['checked'];
+            $post->save();
+
+            return $request;
+        }
+
+        return view('admin.posts.show', ['post'=>$post]);
     }
 
     /**
@@ -138,6 +152,7 @@ class PostsController extends Controller
      */
     public function edit(Post $post)
     {
+        $this->authorize('edit', $post);
 
         $post = Post::find($post->id);
 
@@ -153,10 +168,11 @@ class PostsController extends Controller
      */
     public function update(Request $request, Post $post)
     {
-        //
-        $options = ['image'=>'required|image'];
+      
 
-        $this->validator($options);
+        $this->authorize('update', $post);
+
+        $this->validator();
 
         $user = auth()->user();
         
@@ -167,7 +183,6 @@ class PostsController extends Controller
         $updatePost->title = request('title');
         $updatePost->content = request('post_content');
         $updatePost->image_url = $image;
-        $updatePost->userId =  $user->id;
 
         $updatePost->save();
 
@@ -180,12 +195,11 @@ class PostsController extends Controller
      * @param  \App\Models\Post  $post
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Request $request)
+    public function destroy(Post $post, Request $request)
     {
         //
+        $this->authorize('delete', $post);        
         
-        $post = Post::find($request->postId);
-
         $image = $post->image_url;
         $this->deleteImage($image);
         $post->delete();

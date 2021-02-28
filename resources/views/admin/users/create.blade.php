@@ -55,8 +55,10 @@
 </form>    
 
 @section('js_user_page')
+
     <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
     <script>
+        
         $(document).ready(function(){
             var permissions_box = $('#permissions_box');
             var permissions_ckeckbox_list = $('#permissions_ckeckbox_list');

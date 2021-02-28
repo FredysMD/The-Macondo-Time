@@ -13,7 +13,7 @@ class CreateAddPublishPostCollumnTable extends Migration
      */
     public function up()
     {
-        Schema::table('Posts', function (Blueprint $table) {
+        Schema::table('posts', function (Blueprint $table) {
             $table->integer('published')->default(0);
         });
     }
@@ -25,7 +25,7 @@ class CreateAddPublishPostCollumnTable extends Migration
      */
     public function down()
     {
-        Schema::table('Post', function (Blueprint $table) {
+        Schema::table('posts', function (Blueprint $table) {
             //
         });
     }

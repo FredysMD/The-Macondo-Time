@@ -39,10 +39,10 @@
                   <button class="btn  btn-primary btn-block rounded" type="submit">Log in</button>
                   <div class="text-center">
                     @if (Route::has('password.request'))
-                        <a class="small" href="{{ route('password.request') }}">Forgot password?</a>
+                        <!--<a class="small" href="#">Forgot password?</a>-->
                     
                     @endif
-                    <a  class="small" href="/register">Sign Up</a>
+                    <a  class="small" href="/register">No account? Sign Up</a>
                     </div>
                     <hr class="my-4"> 
                 </form>
